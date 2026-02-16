@@ -1,18 +1,1477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .logo-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lancebot® | LANCEWOOD®</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #202B5A;
+      --navy-light: #2d3a6b;
+      --white: #FFFFFF;
+      --cyan: #23A4E2;
+      --blue: #1B88C8;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+
+      --amber: #f59e0b;
+      --green: #10b981;
+      --pink: #ec4899;
+      --violet: #8b5cf6;
+      --red: #ef4444;
+
+      --mode-accent: var(--cyan);
+      --mode-soft: rgba(35, 164, 226, 0.08);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--gray-50);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      min-height: 100vh;
+      box-shadow: 0 0 60px rgba(32, 43, 90, 0.08);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      padding: 28px 48px;
+      border-bottom: 3px solid var(--mode-accent);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .logo-subtitle {
+      font-size: 11px;
+      color: var(--mode-accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .beta-badge {
+      background: rgba(35, 164, 226, 0.12);
+      border: 2px solid var(--mode-accent);
+      color: var(--mode-accent);
+      padding: 6px 14px;
+      border-radius: 24px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      white-space: nowrap;
+    }
+
+    .mode-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.92);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .header-description {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 900px;
+      font-weight: 400;
+    }
+
+    .header-description strong { color: white; font-weight: 800; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--gray-200);
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .stat-item { background: white; padding: 20px 18px; text-align: center; }
+    .stat-number { font-size: 26px; font-weight: 900; color: var(--navy); margin-bottom: 6px; }
+    .stat-label { font-size: 12px; color: var(--gray-500); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+
+    .tabs-nav { display: flex; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); }
+    .tab-button {
+      flex: 1;
+      padding: 18px 24px;
+      background: transparent;
+      border: none;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border-bottom: 3px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .tab-button:hover { color: var(--navy); background: white; }
+    .tab-button.active { color: var(--navy); background: white; border-bottom-color: var(--mode-accent); }
+    .tab-icon { font-size: 18px; }
+
+    .content-wrapper { display: flex; height: calc(100vh - 300px); min-height: 660px; }
+    .tab-content { display: none; width: 100%; }
+    .tab-content.active { display: flex; flex-direction: column; }
+
+    .chat-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, var(--mode-soft), white 160px);
+    }
+
+    .top-tools {
+      padding: 20px 48px 16px 48px;
+      border-bottom: 1px solid var(--gray-200);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tool-left { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .tool-right { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+    .select {
+      border: 2px solid var(--gray-300);
+      background: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      color: var(--gray-700);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .select:focus { border-color: var(--mode-accent); box-shadow: 0 0 0 4px rgba(35, 164, 226, 0.10); }
+
+    .chip {
+      border: 1px solid var(--gray-200);
+      background: white;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--gray-700);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chip b { color: var(--navy); font-weight: 900; }
+    .chip .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--mode-accent); box-shadow: 0 0 0 4px rgba(35, 164, 226, 0.10); }
+
+    .mini-btn {
+      border: 2px solid var(--gray-300);
+      background: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--gray-700);
+      transition: all 0.2s ease;
+    }
+    .mini-btn:hover {
+      border-color: var(--mode-accent);
+      color: var(--navy);
+      box-shadow: 0 8px 20px rgba(35, 164, 226, 0.10);
+      transform: translateY(-1px);
+    }
+
+    .quick-prompts {
+      padding: 18px 48px 22px 48px;
+      border-bottom: 1px solid var(--gray-200);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+    }
+    .prompts-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .prompts-label .hint {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-500);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .prompts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .prompt-card {
+      background: white;
+      border: 1.5px solid var(--gray-200);
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-700);
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .prompt-card:hover {
+      border-color: var(--mode-accent);
+      background: var(--mode-accent);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(35, 164, 226, 0.22);
+    }
+    .prompt-emoji { font-size: 18px; }
+
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 42px 48px;
+      background: transparent;
+    }
+
+    .message {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 26px;
+      max-width: 88%;
+      animation: messageSlide 0.35s ease;
+    }
+    @keyframes messageSlide {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message.user { margin-left: auto; flex-direction: row-reverse; }
+
+    .message-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .message.bot .message-avatar {
+      background: linear-gradient(135deg, var(--mode-accent), var(--blue));
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(35, 164, 226, 0.22);
+    }
+    .message.user .message-avatar {
+      background: var(--gray-100);
+      color: var(--navy);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .message-bubble {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 16px 18px;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.65;
+      border: 1px solid var(--gray-200);
+    }
+    .message.user .message-bubble {
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 5px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      width: fit-content;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mode-accent);
+      animation: typing 1.4s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
+      30% { transform: scale(1.18); opacity: 1; }
+    }
+
+    .echo {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(35, 164, 226, 0.08);
+      border: 1px solid rgba(35, 164, 226, 0.22);
+      font-size: 13px;
+      color: var(--gray-700);
+    }
+    .echo b { color: var(--navy); }
+
+    .recipe-card {
+      background: white;
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 14px;
+      transition: all 0.22s ease;
+    }
+    .recipe-card:hover {
+      border-color: var(--mode-accent);
+      box-shadow: 0 10px 26px rgba(35, 164, 226, 0.12);
+    }
+    .recipe-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .recipe-title { font-size: 18px; font-weight: 900; color: var(--navy); }
+    .recipe-time {
+      background: var(--gray-100);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--gray-700);
+    }
+    .recipe-description { color: var(--gray-600); font-size: 14px; line-height: 1.65; }
+
+    .recipe-products { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .product-badge {
+      background: linear-gradient(135deg, var(--mode-accent), var(--blue));
+      color: white;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+
+    .recipe-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--mode-accent);
+      font-weight: 900;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(35, 164, 226, 0.25);
+      background: rgba(35, 164, 226, 0.06);
+    }
+    .recipe-link:hover { color: var(--blue); }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid var(--gray-300);
+      background: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--gray-700);
+      transition: all 0.2s ease;
+    }
+    .action-btn.primary {
+      border: none;
+      background: linear-gradient(135deg, var(--mode-accent), var(--blue));
+      color: white;
+      box-shadow: 0 6px 18px rgba(35, 164, 226, 0.28);
+    }
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(35, 164, 226, 0.14);
+      border-color: var(--mode-accent);
+    }
+    .action-btn.primary:hover { border-color: transparent; }
+
+    .input-section {
+      padding: 22px 48px 28px 48px;
+      background: rgba(255, 255, 255, 0.9);
+      border-top: 2px solid var(--gray-200);
+      backdrop-filter: blur(6px);
+    }
+    .input-container {
+      display: flex;
+      gap: 14px;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: center;
+    }
+    .chat-input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--gray-300);
+      border-radius: 28px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.25s ease;
+      background: var(--gray-50);
+    }
+    .chat-input:focus {
+      border-color: var(--mode-accent);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(35, 164, 226, 0.10);
+    }
+    .send-button {
+      padding: 14px 22px;
+      background: linear-gradient(135deg, var(--mode-accent), var(--blue));
+      color: white;
+      border: none;
+      border-radius: 28px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(35, 164, 226, 0.28);
+      white-space: nowrap;
+    }
+    .send-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(35, 164, 226, 0.34);
+    }
+    .send-button:disabled { opacity: 0.5; }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 60px 30px;
+      text-align: center;
+    }
+    .empty-icon { font-size: 72px; margin-bottom: 22px; }
+    .empty-title { font-size: 26px; font-weight: 900; color: var(--navy); margin-bottom: 10px; }
+    .empty-description { font-size: 15px; color: var(--gray-500); line-height: 1.7; max-width: 560px; }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      border-radius: 14px;
+      padding: 12px 14px;
+      min-width: 260px;
+      max-width: 420px;
+      display: none;
+      z-index: 999;
+    }
+    .toast.show { display: block; animation: pop 0.22s ease; }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .toast-title { font-weight: 900; color: var(--navy); font-size: 13px; margin-bottom: 4px; }
+    .toast-body { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+
+    
+    .recipe-image {
+      width: 100%;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      margin-bottom: 14px;
+    }
+
+    .product-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+
+    .product-chip-thumb {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .product-echo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+@media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .prompts-grid { grid-template-columns: 1fr; }
+      .header { padding: 24px 28px; }
+      .quick-prompts, .messages-container, .input-section, .top-tools { padding-left: 28px; padding-right: 28px; }
+    }
+    @media (max-width: 768px) {
+      .header-top { flex-direction: column; align-items: flex-start; }
+      .tabs-nav { flex-direction: column; }
+      .content-wrapper { height: auto; min-height: 760px; }
+      .message { max-width: 95%; }
+      .input-container { flex-direction: column; align-items: stretch; }
+      .send-button { width: 100%; }
+      .tool-right { width: 100%; justify-content: space-between; }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
 </head>
+
 <body>
-    <div class="logo-icon"></div>
+  <div class="app-container">
+    <div class="header">
+      <div class="header-top">
+        <div>
+          <div class="logo">LANCEBOT®</div>
+          <div class="logo-subtitle">The AI That Learned Taste From You</div>
+        </div>
+        <div class="badges">
+          <div class="mode-pill" id="mode-pill">🧀 Mode: Everyday</div>
+          <div class="beta-badge" id="data-badge">Loading recipe and product data</div>
+        </div>
+      </div>
+
+      <div class="header-description">
+        AI can generate recipes. <strong>Taste is human.</strong> So South Africans taught Lancebot. Ask for ideas, upgrades, and plans that fit your life, your fridge, and your flavour memories.
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-number" id="stat-memories">47,382</div>
+        <div class="stat-label">Taste Memories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-recipes">0</div>
+        <div class="stat-label">Recipes Loaded</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-products">0</div>
+        <div class="stat-label">Products Loaded</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">South African Energy</div>
+      </div>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-button active" onclick="switchTab('generator')"><span class="tab-icon">🧀</span> Recipe Generator</button>
+      <button class="tab-button" onclick="switchTab('planner')"><span class="tab-icon">📅</span> Meal Planner</button>
+      <button class="tab-button" onclick="switchTab('more')"><span class="tab-icon">✨</span> Made For More Mode</button>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Generator -->
+      <div class="tab-content active" id="generator">
+        <div class="chat-section">
+          <div class="top-tools">
+            <div class="tool-left">
+              <select class="select" id="mode-select" onchange="setMode(this.value)">
+                <option value="everyday">Everyday</option>
+                <option value="braai">Braai Mode</option>
+                <option value="lunchbox">Lunchbox Mode</option>
+                <option value="budget">Budget Mode</option>
+                <option value="heritage">Heritage Mode</option>
+                <option value="festive">Festive Mode</option>
+              </select>
+              <button class="mini-btn" onclick="openShoppingList()">🛒 Shopping list</button>
+              <button class="mini-btn" onclick="resetChat()">🧼 New chat</button>
+            </div>
+            <div class="tool-right">
+              <div class="chip"><span class="dot"></span> Learned from <b id="chip-memories">47,382</b> taste memories</div>
+            </div>
+          </div>
+
+          <div class="quick-prompts">
+            <div class="prompts-label">
+              <span>Try asking Lancebot</span>
+              <span class="hint" id="prompt-hint">Pick a prompt, or type your own</span>
+            </div>
+            <div class="prompts-grid" id="generator-prompts"></div>
+          </div>
+
+          <div class="messages-container" id="generator-messages">
+            <div class="empty-state">
+              <div class="empty-icon">🧀</div>
+              <div class="empty-title">What are we making today?</div>
+              <div class="empty-description">
+                Tell me what you have, what you are craving, or what the day looks like. I will pull from the Lancewood recipe and product library and keep it realistic.
+              </div>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <div class="input-container">
+              <input type="text" class="chat-input" id="generator-input" placeholder="Eg: I have pasta and spinach, what can I make?" onkeypress="handleKeyPress(event, 'generator')" />
+              <button class="send-button" id="generator-send" onclick="sendMessage('generator')">Ask Lancebot</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Planner -->
+      <div class="tab-content" id="planner">
+        <div class="chat-section">
+          <div class="top-tools">
+            <div class="tool-left">
+              <select class="select" id="planner-mode-select" onchange="setMode(this.value)">
+                <option value="everyday">Everyday</option>
+                <option value="braai">Braai Mode</option>
+                <option value="lunchbox">Lunchbox Mode</option>
+                <option value="budget">Budget Mode</option>
+                <option value="heritage">Heritage Mode</option>
+                <option value="festive">Festive Mode</option>
+              </select>
+              <button class="mini-btn" onclick="openShoppingList()">🛒 Shopping list</button>
+              <button class="mini-btn" onclick="resetChat()">🧼 New chat</button>
+            </div>
+            <div class="tool-right">
+              <div class="chip"><span class="dot"></span> Taste memory echo: <b>on</b></div>
+            </div>
+          </div>
+
+          <div class="quick-prompts">
+            <div class="prompts-label">
+              <span>Meal planning starters</span>
+              <span class="hint">Tell me who you are feeding and your time limit</span>
+            </div>
+            <div class="prompts-grid" id="planner-prompts"></div>
+          </div>
+
+          <div class="messages-container" id="planner-messages">
+            <div class="empty-state">
+              <div class="empty-icon">📅</div>
+              <div class="empty-title">Let’s plan your week</div>
+              <div class="empty-description">
+                Give me days, budget, and vibes. I will build a plan using Lancewood recipes, no repeats, and I will create your shopping list.
+              </div>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <div class="input-container">
+              <input type="text" class="chat-input" id="planner-input" placeholder="Eg: 5 dinners, no repeats, braai Friday, kids are fussy" onkeypress="handleKeyPress(event, 'planner')" />
+              <button class="send-button" id="planner-send" onclick="sendMessage('planner')">Create plan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Made For More -->
+      <div class="tab-content" id="more">
+        <div class="chat-section">
+          <div class="top-tools">
+            <div class="tool-left">
+              <select class="select" id="more-mode-select" onchange="setMode(this.value)">
+                <option value="everyday">Everyday</option>
+                <option value="braai">Braai Mode</option>
+                <option value="lunchbox">Lunchbox Mode</option>
+                <option value="budget">Budget Mode</option>
+                <option value="heritage">Heritage Mode</option>
+                <option value="festive">Festive Mode</option>
+              </select>
+              <button class="mini-btn" onclick="openShoppingList()">🛒 Shopping list</button>
+              <button class="mini-btn" onclick="resetChat()">🧼 New chat</button>
+            </div>
+            <div class="tool-right">
+              <div class="chip"><span class="dot"></span> Upgrade: <b>Balanced</b></div>
+            </div>
+          </div>
+
+          <div class="quick-prompts">
+            <div class="prompts-label">
+              <span>Make it more</span>
+              <span class="hint">Tell me what you are cooking, I will upgrade it with Lancewood</span>
+            </div>
+            <div class="prompts-grid" id="more-prompts"></div>
+          </div>
+
+          <div class="messages-container" id="more-messages">
+            <div class="empty-state">
+              <div class="empty-icon">✨</div>
+              <div class="empty-title">Everything can be Made for More</div>
+              <div class="empty-description">
+                Tell me what it is, toasties, pasta, chicken, snacks, and I will suggest the simplest Lancewood upgrade and the best product match.
+              </div>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <div class="input-container">
+              <input type="text" class="chat-input" id="more-input" placeholder="Eg: I have 2 minute noodles, make it feel fancy" onkeypress="handleKeyPress(event, 'more')" />
+              <button class="send-button" id="more-send" onclick="sendMessage('more')">Make it more</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <div class="toast-title" id="toast-title">Added</div>
+    <div class="toast-body" id="toast-body">Saved to your shopping list.</div>
+  </div>
+
+  <script>
+    const DB = {
+      products: [],
+      recipes: [],
+      substitutions: {},
+      taxonomy: {},
+      meta: {},
+      loaded: false
+    };
+
+    // Embedded fallback data (trimmed) so this file still runs even if fetch is blocked.
+    const FALLBACK_DB = {"meta": {"brand": "Lancewood", "generated_for": "Lancebot", "source_files": ["Lancewood_Recipess_and_Products.txt", "Lancewood_CheatSheet.txt"], "notes": ["This JSON is a structured conversion of the internal Lancewood text files provided.", "Recipe entries are stubs based on lists, they do not yet include full ingredient quantities or method steps."]}, "taxonomy": {"categories": ["Cream Cheese (Full Fat, Medium Fat, Flavoured)", "Cottage Cheese", "Hard Cheeses", "Grated Cheeses", "Yoghurts (Double Cream, Multipack, Flavoured, Lactose-Free)", "Mascarpone", "Cultured Cream (Crème Fraîche)", "Sour Cream", "Sauces and Dips", "Food Service Range"], "notes": "Category labels copied from internal Lancewood knowledge file."}, "products": [{"id": "lancewood_medium_fat_plain_cream_cheese", "name": "Lancewood Medium Fat Plain Cream Cheese", "category": "cream_cheese", "tags": [], "description": "SA’s top-selling cream cheese", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_full_fat_plain_cream_cheese", "name": "Lancewood Full Fat Plain Cream Cheese", "category": "cream_cheese", "tags": [], "description": "rich and versatile, ideal for braais and desserts", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_roasted_peppers", "name": "Lancewood Flavoured Cream Cheese Roasted Peppers", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_smoked_ham", "name": "Lancewood Flavoured Cream Cheese Smoked Ham", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_sweet_chilli", "name": "Lancewood Flavoured Cream Cheese Sweet Chilli", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_jalape_o_chilli", "name": "Lancewood Flavoured Cream Cheese Jalapeño & Chilli", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_smokey_onion_mustard", "name": "Lancewood Flavoured Cream Cheese Smokey Onion & Mustard", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_flavoured_cream_cheese_spring_onion_chives", "name": "Lancewood Flavoured Cream Cheese Spring Onion & Chives", "category": "cream_cheese_flavoured", "tags": ["cream_cheese", "flavoured"], "description": "Flavoured cream cheese variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_berry_compote_cream_cheese", "name": "Lancewood Berry Compote Cream Cheese", "category": "cream_cheese", "tags": [], "description": "creamy with a sweet twist", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_double_cream_vanilla_and_lemon_yoghurt", "name": "Lancewood Double Cream Vanilla and Lemon Yoghurt", "category": "yoghurt", "tags": [], "description": "award-winning, also available in multipacks", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_lactose_free_range", "name": "Lancewood Lactose-Free Range", "category": "lactose_free", "tags": ["lactose_free"], "description": "Umbrella entry for lactose-free products.", "storage": "Keep refrigerated, follow pack instructions.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_lactose_free_cheddar", "name": "Lancewood Lactose-Free Cheddar", "category": "hard_cheese", "tags": ["lactose_free"], "description": "Lactose-free product variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_lactose_free_yoghurt", "name": "Lancewood Lactose-Free Yoghurt", "category": "yoghurt", "tags": ["lactose_free"], "description": "Lactose-free product variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_lactose_free_cream_cheese", "name": "Lancewood Lactose-Free Cream Cheese", "category": "cream_cheese", "tags": ["lactose_free"], "description": "Lactose-free product variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_lactose_free_cottage_cheese", "name": "Lancewood Lactose-Free Cottage Cheese", "category": "cottage_cheese", "tags": ["lactose_free"], "description": "Lactose-free product variant.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_sour_cream", "name": "Lancewood Sour Cream", "category": "sour_cream", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_mascarpone", "name": "Lancewood Mascarpone", "category": "mascarpone", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_cultured_cream_cr_me_fra_che", "name": "Lancewood Cultured Cream (Crème Fraîche)", "category": "cultured_cream", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_grated_cheddar", "name": "Lancewood Grated Cheddar", "category": "grated_cheese", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_white_cheddar", "name": "Lancewood White Cheddar", "category": "hard_cheese", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_cheese_sauce", "name": "Lancewood Cheese Sauce", "category": "sauces_and_dips", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_grated_mozzarella", "name": "Lancewood Grated Mozzarella", "category": "grated_cheese", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}, {"id": "lancewood_cheddar_cheese_block", "name": "Lancewood Cheddar Cheese Block", "category": "hard_cheese", "tags": [], "description": "Portfolio item referenced in categories or recipe list.", "storage": "Keep refrigerated, reseal after opening.", "url": "https://lancewood.co.za/"}], "recipes": [{"id": "no_bake_cheesecake_4_ways", "title": "No-Bake Cheesecake 4 Ways", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Full Fat Plain Cream Cheese"], "products_used_ids": ["lancewood_full_fat_plain_cream_cheese"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "classic_baked_cheesecake", "title": "Classic Baked Cheesecake", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Full Fat Plain Cream Cheese", "Sour Cream"], "products_used_ids": ["lancewood_full_fat_plain_cream_cheese", "lancewood_sour_cream"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "no_bake_lemon_cheesecake", "title": "No-Bake Lemon Cheesecake", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Double Cream Lemon Cheesecake Yoghurt"], "products_used_ids": ["lancewood_double_cream_vanilla_and_lemon_yoghurt"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "creamy_baked_vanilla_yoghurt", "title": "Creamy Baked Vanilla Yoghurt", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Double Cream Vanilla Yoghurt"], "products_used_ids": ["lancewood_double_cream_vanilla_and_lemon_yoghurt"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "easy_cream_cheese_pasta", "title": "Easy Cream Cheese Pasta", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Full Fat Plain Cream Cheese"], "products_used_ids": ["lancewood_full_fat_plain_cream_cheese"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "creamy_mac_cheese", "title": "Creamy Mac & Cheese", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Cheese Sauce", "Grated Cheddar"], "products_used_ids": ["lancewood_cheese_sauce", "lancewood_grated_cheddar"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "creamy_cauliflower_soup", "title": "Creamy Cauliflower Soup", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["White Cheddar", "Cultured Cream"], "products_used_ids": ["lancewood_white_cheddar", "lancewood_cultured_cream_creme_fraiche"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "panna_cotta", "title": "Panna Cotta", "type": "recipe", "source": "Top Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": ["Double Cream Vanilla Yoghurt"], "products_used_ids": ["lancewood_double_cream_vanilla_and_lemon_yoghurt"], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "mini_burgers", "title": "Mini burgers", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "gluten_free_malva_pudding", "title": "Gluten-free malva pudding", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "chocolate_parfaits", "title": "Chocolate parfaits", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "no_bake_smores", "title": "No-bake s’mores", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "chicken_pot_pie", "title": "Chicken pot pie", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "flapjacks", "title": "Flapjacks", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "cottage_pie", "title": "Cottage pie", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "sweet_potato_bake", "title": "Sweet potato bake", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "lactose_free_muffins", "title": "Lactose-free muffins", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}, {"id": "cheesy_cookies", "title": "Cheesy cookies", "type": "video_recipe", "source": "Video Recipes list", "time_mins": null, "difficulty": null, "occasions": [], "products_used_text": [], "products_used_ids": [], "ingredients": [], "steps": [], "shopping_list": [], "url": "https://lancewood.co.za/recipes/"}], "substitutions": {"mascarpone": [{"use_product_id": "lancewood_cream_cheese_full_fat_plain_cream_cheese", "use_product_name_hint": "Lancewood Full Fat Plain Cream Cheese", "note": "Use cream cheese as a swap for mascarpone, loosen with a splash of cream or milk if you want it lighter."}], "creme_fraiche": [{"use_product_id": "lancewood_cultured_cream_cr_me_fra_che", "use_product_name_hint": "Lancewood Cultured Cream (Crème Fraîche)", "note": "Use cultured cream (crème fraîche) where a recipe calls for crème fraîche."}], "sour_cream": [{"use_product_id": "lancewood_sour_cream", "use_product_name_hint": "Lancewood Sour Cream", "note": "Use sour cream as listed in classic baked cheesecake pairing."}]}};
+
+    let currentTab = 'generator';
+    let tasteMemories = 47382;
+    let shoppingList = [];
+    let currentMode = 'everyday';
+
+    let recipeFuse = null;
+    let productFuse = null;
+
+    const modes = {
+      everyday: { label: 'Everyday', accent: 'var(--cyan)', soft: 'rgba(35, 164, 226, 0.08)' },
+      braai: { label: 'Braai Mode', accent: 'var(--amber)', soft: 'rgba(245, 158, 11, 0.10)' },
+      lunchbox: { label: 'Lunchbox Mode', accent: 'var(--green)', soft: 'rgba(16, 185, 129, 0.10)' },
+      budget: { label: 'Budget Mode', accent: 'var(--violet)', soft: 'rgba(139, 92, 246, 0.10)' },
+      heritage: { label: 'Heritage Mode', accent: 'var(--pink)', soft: 'rgba(236, 72, 153, 0.10)' },
+      festive: { label: 'Festive Mode', accent: 'var(--red)', soft: 'rgba(239, 68, 68, 0.08)' }
+    };
+
+    const prompts = {
+      generator: {
+        everyday: [
+          { emoji: '🍝', text: 'I have pasta and spinach, what can I make?' },
+          { emoji: '⚡', text: 'Load shedding dinner in 20 minutes' },
+          { emoji: '✨', text: 'Impress the in laws with something cheesy' },
+          { emoji: '🧊', text: 'Month end meals, but still tasty' }
+        ],
+        braai: [
+          { emoji: '🔥', text: 'Braai side with cheese that disappears fast' },
+          { emoji: '🧄', text: 'Easy dip for chips and wors rolls' },
+          { emoji: '🥖', text: 'Garlic bread upgrade with Lancewood' },
+          { emoji: '🧀', text: 'Cheese snack ideas for the fire' }
+        ],
+        lunchbox: [
+          { emoji: '🍱', text: 'Skaftin sorted in 5 minutes' },
+          { emoji: '🥪', text: 'Lunchbox ideas that kids actually eat' },
+          { emoji: '🥤', text: 'Snack ideas for after school' },
+          { emoji: '🧠', text: 'Healthy, filling lunch for work' }
+        ],
+        budget: [
+          { emoji: '💰', text: 'Budget meals that still feel like comfort food' },
+          { emoji: '🍲', text: 'One pot dinner using what I have' },
+          { emoji: '🧀', text: 'Cheesy meals without fancy ingredients' },
+          { emoji: '📦', text: 'Meal ideas for a week on a tight budget' }
+        ],
+        heritage: [
+          { emoji: '🇿🇦', text: 'Heritage inspired meal, but easy' },
+          { emoji: '🍞', text: 'Vetkoek filling ideas with cheese' },
+          { emoji: '🥘', text: 'How do I make my chakalaka creamy?' },
+          { emoji: '🍗', text: 'Sunday lunch shortcut with big flavour' }
+        ],
+        festive: [
+          { emoji: '🎉', text: 'Snack board ideas using Lancewood' },
+          { emoji: '🍰', text: 'Cheesecake idea that is not boring' },
+          { emoji: '🥳', text: 'Easy crowd food for visitors' },
+          { emoji: '🍗', text: 'Holiday leftovers, make them exciting' }
+        ]
+      },
+      planner: {
+        everyday: [
+          { emoji: '👨‍👩‍👧‍👦', text: 'Plan 5 dinners for a family, no repeats' },
+          { emoji: '⚡', text: 'Quick weeknight meals, 30 minutes max' },
+          { emoji: '🥗', text: 'High protein meals for the week' },
+          { emoji: '🔥', text: 'Braai Friday, keep the rest easy' }
+        ],
+        braai: [
+          { emoji: '🔥', text: 'Plan a braai menu with sides and snacks' },
+          { emoji: '🥩', text: 'Braai week plan, light meals before Friday' },
+          { emoji: '🧀', text: 'Cheese forward weekend plan' },
+          { emoji: '🥗', text: 'Balance braai with lighter lunches' }
+        ],
+        lunchbox: [
+          { emoji: '🍱', text: 'Plan 5 lunchboxes for school' },
+          { emoji: '🧠', text: 'Work lunches for a week, no reheating' },
+          { emoji: '🥤', text: 'Snack plan for after school' },
+          { emoji: '⚡', text: 'Prep once, eat all week' }
+        ],
+        budget: [
+          { emoji: '💰', text: 'Budget friendly menu for a week' },
+          { emoji: '🍲', text: 'One pot dinners for 5 days' },
+          { emoji: '🧾', text: 'Shopping list plus meal plan' },
+          { emoji: '📦', text: 'Stretch leftovers into new meals' }
+        ],
+        heritage: [
+          { emoji: '🇿🇦', text: 'Heritage week plan, still practical' },
+          { emoji: '🥘', text: 'Sunday lunch plus leftovers plan' },
+          { emoji: '🍞', text: 'Local flavours, kid friendly' },
+          { emoji: '🍗', text: 'Big pot meal plan for gatherings' }
+        ],
+        festive: [
+          { emoji: '🎉', text: 'Entertaining menu for the weekend' },
+          { emoji: '🥳', text: 'Snack heavy plan for visitors' },
+          { emoji: '🍰', text: 'Dessert plan, one bake day' },
+          { emoji: '🍗', text: 'Holiday meals, light and easy' }
+        ]
+      },
+      more: {
+        everyday: [
+          { emoji: '🥪', text: 'Make my toasted sandwich elite' },
+          { emoji: '🍝', text: 'Upgrade pasta salad with Lancewood' },
+          { emoji: '🍗', text: 'Upgrade my chicken dinner with cheese' },
+          { emoji: '🍳', text: 'Better breakfasts with cheese' }
+        ],
+        braai: [
+          { emoji: '🔥', text: 'Make my braai broodjie more cheesy' },
+          { emoji: '🧀', text: 'Make a dip that tastes like a party' },
+          { emoji: '🥖', text: 'Upgrade garlic bread with cream cheese' },
+          { emoji: '🍟', text: 'Cheesy chip sauce ideas' }
+        ],
+        lunchbox: [
+          { emoji: '🍱', text: 'Make lunchboxes more filling, less effort' },
+          { emoji: '🥤', text: 'Make snacks more protein packed' },
+          { emoji: '🥪', text: 'Upgrade wraps without cooking' },
+          { emoji: '🍳', text: 'Breakfast to go upgrades' }
+        ],
+        budget: [
+          { emoji: '💰', text: 'Make my 2 minute noodles feel fancy' },
+          { emoji: '🍲', text: 'Upgrade soup with a creamy finish' },
+          { emoji: '🍞', text: 'Bread plus cheese upgrade ideas' },
+          { emoji: '🧀', text: 'Make leftovers taste new' }
+        ],
+        heritage: [
+          { emoji: '🇿🇦', text: 'Make chakalaka creamy, not messy' },
+          { emoji: '🍞', text: 'Vetkoek filling upgrades' },
+          { emoji: '🥘', text: 'Add cheese to a stew the right way' },
+          { emoji: '🔥', text: 'Braai sides with local flavour' }
+        ],
+        festive: [
+          { emoji: '🎉', text: 'Upgrade a snack platter with cheese' },
+          { emoji: '🥳', text: 'Make a dip table that looks expensive' },
+          { emoji: '🍰', text: 'Make dessert feel like a restaurant' },
+          { emoji: '🍗', text: 'Upgrade leftovers into party food' }
+        ]
+      }
+    };
+
+    const tasteMemoryEchoes = [
+      "South Africans told me this tastes like <b>Sunday lunch</b> and a second helping.",
+      "I learned that <b>braai</b> is smoke, stories, and something crispy on the side.",
+      "Taste memory check, people said this is <b>soft life</b>, but make it savoury.",
+      "I have learned that <b>skaftin</b> means quick, filling, and no drama.",
+      "Somebody wrote: <b>midnight fridge raid</b>. I respect the honesty."
+    ];
+
+    const signatureLines = [
+      "Made for more.",
+      "Now that is quality time.",
+      "More creamy, less complicated.",
+      "That is how we do cheese."
+    ];
+
+    function toast(title, body) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-title').textContent = title;
+      document.getElementById('toast-body').textContent = body;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    function updateTasteMemories(delta) {
+      tasteMemories += delta;
+      const formatted = tasteMemories.toLocaleString('en-US');
+      document.getElementById('stat-memories').textContent = formatted;
+      document.getElementById('chip-memories').textContent = formatted;
+    }
+
+    function setDataBadge(ok, note) {
+      const badge = document.getElementById('data-badge');
+      badge.textContent = note;
+      if (!ok) {
+        badge.style.borderColor = 'rgba(255,255,255,0.35)';
+        badge.style.color = 'rgba(255,255,255,0.85)';
+        badge.style.background = 'rgba(255,255,255,0.12)';
+      }
+    }
+
+    async function loadDB() {
+      // Try to load external db first. Needs to be served over http(s) or same-origin.
+      try {
+        const candidates = [
+          './lancebot_data/lancebot_db.json',
+          'lancebot_data/lancebot_db.json',
+          './data/lancebot_db.json',
+          'data/lancebot_db.json',
+          '/lancebot_data/lancebot_db.json'
+        ];
+        let data = null;
+        let lastErr = null;
+        for (const url of candidates) {
+          try {
+            const res = await fetch(url, { cache: 'no-store' });
+            if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+            data = await res.json();
+            break;
+          } catch (err) {
+            lastErr = err;
+          }
+        }
+        if (!data) throw lastErr || new Error('Fetch failed');
+
+        applyDB(data, true);
+        setDataBadge(true, 'Recipe brain loaded');
+      } catch (e) {
+        applyDB(FALLBACK_DB, false);
+        setDataBadge(false, 'Demo data loaded');
+      }
+    }
+
+    function applyDB(data, isFull) {
+      DB.products = Array.isArray(data.products) ? data.products : [];
+      DB.recipes = Array.isArray(data.recipes) ? data.recipes : [];
+      DB.substitutions = data.substitutions || {};
+      DB.taxonomy = data.taxonomy || {};
+      DB.meta = data.meta || {};
+      DB.loaded = true;
+
+      document.getElementById('stat-recipes').textContent = DB.recipes.length.toLocaleString('en-US');
+      document.getElementById('stat-products').textContent = DB.products.length.toLocaleString('en-US');
+
+      recipeFuse = new Fuse(DB.recipes, {
+        keys: ['title', 'source', 'products_used_text', 'occasions', 'ingredients.name'],
+        threshold: 0.35,
+        ignoreLocation: true
+      });
+
+      productFuse = new Fuse(DB.products, {
+        keys: ['name', 'category', 'tags', 'description'],
+        threshold: 0.35,
+        ignoreLocation: true
+      });
+    }
+
+    function switchTab(tabName) {
+      currentTab = tabName;
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      event.target.closest('.tab-button').classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+      renderPrompts();
+    }
+
+    function setMode(modeKey) {
+      currentMode = modeKey;
+      const m = modes[modeKey] || modes.everyday;
+      document.documentElement.style.setProperty('--mode-accent', m.accent);
+      document.documentElement.style.setProperty('--mode-soft', m.soft);
+      document.getElementById('mode-pill').textContent = '🧀 Mode: ' + m.label;
+
+      ['mode-select', 'planner-mode-select', 'more-mode-select'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value !== modeKey) el.value = modeKey;
+      });
+
+      renderPrompts();
+    }
+
+    function renderPrompts() {
+      const tabKey = currentTab;
+      const list = (prompts[tabKey] && prompts[tabKey][currentMode]) ? prompts[tabKey][currentMode] : (prompts[tabKey] ? prompts[tabKey].everyday : []);
+      const grid = document.getElementById(tabKey + '-prompts');
+      if (!grid) return;
+      grid.innerHTML = '';
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'prompt-card';
+        card.innerHTML = `<span class="prompt-emoji">${p.emoji}</span> <span>${p.text}</span>`;
+        card.onclick = () => askQuestion(p.text);
+        grid.appendChild(card);
+      });
+    }
+
+    function clearEmptyState(containerId) {
+      const container = document.getElementById(containerId);
+      const emptyState = container ? container.querySelector('.empty-state') : null;
+      if (emptyState) emptyState.remove();
+    }
+
+    function addMessage(html, isUser, containerId) {
+      clearEmptyState(containerId);
+      const container = document.getElementById(containerId);
+      const div = document.createElement('div');
+      div.className = 'message ' + (isUser ? 'user' : 'bot');
+      const avatarText = isUser ? 'YOU' : '🧀';
+      div.innerHTML = `<div class="message-avatar">${avatarText}</div><div class="message-bubble">${html}</div>`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function showTyping(containerId) {
+      clearEmptyState(containerId);
+      const container = document.getElementById(containerId);
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message bot';
+      typingDiv.id = 'typing-' + containerId;
+      typingDiv.innerHTML = `
+        <div class="message-avatar">🧀</div>
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+      container.appendChild(typingDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function hideTyping(containerId) {
+      const typing = document.getElementById('typing-' + containerId);
+      if (typing) typing.remove();
+    }
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function detectContext(text) {
+      const t = (text || '').toLowerCase();
+      return {
+        tired: t.includes('tired') || t.includes('moeg') || t.includes('exhausted') || t.includes('drained'),
+        loadshedding: t.includes('load shedding') || t.includes('loadshed') || t.includes('no power') || t.includes('power out') || t.includes('electricity'),
+        kids: t.includes('kids') || t.includes('child') || t.includes('lunchbox') || t.includes('skaftin') || t.includes('school'),
+        monthend: t.includes('month end') || t.includes('month-end') || t.includes('budget') || t.includes('broke') || t.includes('tight'),
+        braai: t.includes('braai') || t.includes('wors') || t.includes('fire') || t.includes('tjop'),
+        impress: t.includes('impress') || t.includes('in laws') || t.includes('in-laws') || t.includes('guests') || t.includes('date night')
+      };
+    }
+
+    function parseIngredients(text) {
+      // very simple extraction after "i have" or "have:"
+      const t = (text || '').toLowerCase();
+      let chunk = '';
+      if (t.includes('i have')) chunk = t.split('i have')[1];
+      else if (t.includes('have:')) chunk = t.split('have:')[1];
+      else chunk = t;
+
+      chunk = chunk.replace(/\bwhat\b|\bcan\b|\bmake\b|\bwith\b|\bplease\b|\bnow\b|\?/g, ' ');
+      const parts = chunk.split(/,|and|&|\n/).map(s => s.trim()).filter(Boolean);
+      const cleaned = parts
+        .map(p => p.replace(/[^a-z0-9\s]/g, '').trim())
+        .filter(p => p.length > 1)
+        .slice(0, 10);
+
+      // unique preserve order
+      const seen = new Set();
+      const out = [];
+      cleaned.forEach(i => { if (!seen.has(i)) { seen.add(i); out.push(i); } });
+      return out;
+    }
+
+    function matchRecipes(query, ctx, limit) {
+      if (!recipeFuse) return [];
+      const results = recipeFuse.search(query).map(r => r.item);
+
+      // Mode bias, simple tag inference
+      const modeBias = currentMode;
+
+      function score(r) {
+        let s = 0;
+        const title = (r.title || '').toLowerCase();
+        const src = (r.source || '').toLowerCase();
+
+        if (ctx.braai && (title.includes('braai') || src.includes('braai'))) s += 2;
+        if (ctx.kids && (title.includes('kids') || title.includes('lunch') || title.includes('snack'))) s += 1;
+        if (ctx.impress && (title.includes('cheesecake') || title.includes('board') || title.includes('baked'))) s += 1;
+        if (ctx.monthend && (title.includes('easy') || title.includes('quick') || src.includes('top'))) s += 0.5;
+
+        if (modeBias === 'braai' && (title.includes('braai') || title.includes('dip'))) s += 1.5;
+        if (modeBias === 'lunchbox' && (title.includes('lunch') || title.includes('sandwich') || title.includes('snack'))) s += 1.5;
+        if (modeBias === 'budget' && (title.includes('easy') || title.includes('quick'))) s += 1;
+        if (modeBias === 'heritage' && (title.includes('vetkoek') || title.includes('chakalaka'))) s += 2;
+        if (modeBias === 'festive' && (title.includes('cheesecake') || title.includes('board'))) s += 1.5;
+
+        // Prefer entries that mention products used
+        if (Array.isArray(r.products_used_ids) && r.products_used_ids.length) s += 1;
+        return s;
+      }
+
+      const unique = [];
+      const seen = new Set();
+      results.forEach(r => {
+        if (!r || !r.id || seen.has(r.id)) return;
+        seen.add(r.id);
+        unique.push(r);
+      });
+
+      unique.sort((a,b) => score(b) - score(a));
+      return unique.slice(0, limit || 5);
+    }
+
+    function resolveProductsForRecipe(recipe) {
+      const ids = Array.isArray(recipe.products_used_ids) ? recipe.products_used_ids : [];
+      const byId = new Map(DB.products.map(p => [p.id, p]));
+      const products = ids.map(id => byId.get(id)).filter(Boolean);
+      return products;
+    }
+
+    function buildSubstitutionBlock(message) {
+      const t = (message || '').toLowerCase();
+      const keys = Object.keys(DB.substitutions || {});
+      const hit = keys.find(k => t.includes(k.replace('_',' ')) || t.includes(k));
+      if (!hit) return '';
+
+      const options = DB.substitutions[hit] || [];
+      if (!options.length) return '';
+
+      const best = options[0];
+      const name = best.use_product_name_hint || 'Lancewood option';
+      const note = best.note || 'Swap suggestion available.';
+      return `<div class="echo">🔁 Swap idea: If you mean <b>${hit.replaceAll('_',' ')}</b>, try <b>${name}</b>. ${note}</div>`;
+    }
+
+    function createRecipeCard(recipe, cardId) {
+      const products = resolveProductsForRecipe(recipe);
+
+      const heroImage = (recipe && recipe.image) ? recipe.image : (products[0] && products[0].image ? products[0].image : '');
+      const heroImgHtml = heroImage ? `<img class="recipe-image" src="${heroImage}" alt="${recipe.title || 'Recipe image'}" loading="lazy" />` : '';
+
+      const badges = products.length
+        ? products.map(p => {
+            const thumb = p.image ? `<img class="product-thumb" src="${p.image}" alt="${p.name}" loading="lazy" />` : '🧀';
+            const label = p.name ? p.name.replace('Lancewood ','') : 'Lancewood';
+            return `<span class="product-badge">${thumb} ${label}</span>`;
+          }).join('')
+        : `<span class="product-badge">🧀 Lancewood match suggested</span>`;
+
+      const timeText = recipe.time_mins ? `${recipe.time_mins} min` : 'Quick';
+      const desc = recipe.source ? `From ${recipe.source}.` : 'Pulled from Lancewood recipes.';
+
+      // If we do not have shopping list data, create a minimal list from products
+      const listItems = products.length ? products.map(p => p.name).join(', ') : 'Lancewood product of choice';
+
+      return `
+        <div class="recipe-card" data-cardid="${cardId}">
+          ${heroImgHtml}
+          <div class="recipe-header">
+            <div class="recipe-title">${recipe.title || 'Recipe idea'}</div>
+            <div class="recipe-time">⏱️ ${timeText}</div>
+          </div>
+          <div class="recipe-description">${desc}</div>
+          <div class="recipe-products">${badges}</div>
+          <div class="card-actions">
+            <a href="${recipe.url || 'https://lancewood.co.za/recipes/'}" class="recipe-link" target="_blank" rel="noreferrer">View recipe hub →</a>
+            <button class="action-btn primary" onclick="addToShoppingList('${cardId}')">🛒 Add to shopping list</button>
+            <button class="action-btn" onclick="copyShopping('${cardId}')">📋 Copy items</button>
+          </div>
+          <div style="display:none" id="items-${cardId}">${listItems}</div>
+        </div>
+      `;
+    }
+
+    function addToShoppingList(cardId) {
+      const itemsText = document.getElementById('items-' + cardId);
+      if (!itemsText) return;
+      const items = itemsText.textContent.split(',').map(s => s.trim()).filter(Boolean);
+      const before = shoppingList.length;
+      items.forEach(i => { if (!shoppingList.includes(i)) shoppingList.push(i); });
+      const added = shoppingList.length - before;
+      toast('Added', added > 0 ? 'Saved to your shopping list.' : 'Already in your shopping list.');
+      updateTasteMemories(1);
+    }
+
+    function copyShopping(cardId) {
+      const itemsText = document.getElementById('items-' + cardId);
+      if (!itemsText) return;
+      const txt = itemsText.textContent;
+      navigator.clipboard.writeText(txt).then(() => {
+        toast('Copied', 'Shopping items copied.');
+      }).catch(() => {
+        toast('Copy', 'Copy not available in this browser.');
+      });
+    }
+
+    function openShoppingList() {
+      if (shoppingList.length === 0) {
+        toast('Shopping list', 'Nothing here yet. Add items from a recipe card.');
+        return;
+      }
+      const list = shoppingList.map(i => '• ' + i).join('\n');
+      navigator.clipboard.writeText(list).then(() => {
+        toast('Shopping list', 'Copied to clipboard. Paste it into Notes or WhatsApp.');
+      }).catch(() => {
+        alert('Shopping list:\n\n' + list);
+      });
+    }
+
+    function resetChat() {
+      ['generator-messages', 'planner-messages', 'more-messages'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = '';
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.innerHTML = `<div class="empty-icon">🧀</div><div class="empty-title">Fresh start</div><div class="empty-description">Ask anything. Taste is human, and I learned it from you. Made for more.</div>`;
+        el.appendChild(empty);
+      });
+      toast('New chat', 'Fresh start. Let’s cook.');
+    }
+
+    function emotionAwareIntro(message, ctx) {
+      if (ctx.tired) return "You sound tired. Let’s do comfort, not complexity.<br><br>";
+      if (ctx.loadshedding) return "Load shedding friendly ideas coming up. Minimal steps, maximum comfort.<br><br>";
+      if (ctx.monthend) return "Month end mode, I will keep it budget friendly and filling.<br><br>";
+      if (ctx.kids) return "Okay, kid friendly and lunchbox proof. Let’s do it.<br><br>";
+      return "";
+    }
+
+    function buildPlanner(message, ctx) {
+      // Determine days from message
+      const m = (message || '').toLowerCase();
+      const days = (m.match(/\b(\d+)\b/) ? parseInt(m.match(/\b(\d+)\b/)[1], 10) : 5);
+      const totalDays = Math.max(3, Math.min(10, isNaN(days) ? 5 : days));
+
+      const pool = matchRecipes(message + ' plan week dinners', ctx, 50);
+      const plan = [];
+      const used = new Set();
+
+      for (let i = 0; i < pool.length && plan.length < totalDays; i++) {
+        const r = pool[i];
+        if (!r || !r.id || used.has(r.id)) continue;
+        used.add(r.id);
+        plan.push(r);
+      }
+
+      // build shopping list from products referenced
+      const tempList = [];
+      plan.forEach(r => {
+        const ps = resolveProductsForRecipe(r);
+        ps.forEach(p => { if (p && p.name) tempList.push(p.name); });
+      });
+      const uniq = Array.from(new Set(tempList));
+
+      let html = `<b>Here’s a ${totalDays} day plan using Lancewood recipes:</b>`;
+      html += `<div class="echo">🧠 Taste memory echo: ${pick(tasteMemoryEchoes)}</div>`;
+
+      plan.forEach((r, idx) => {
+        const label = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Day 8','Day 9','Day 10'][idx] || ('Day ' + (idx+1));
+        html += `<div class="recipe-card"><div class="recipe-header"><div class="recipe-title">${label}: ${r.title}</div><div class="recipe-time">⏱️ Quick</div></div>
+          <div class="recipe-description">Pulled from the Lancewood library, tweakable for your mode: <b>${modes[currentMode].label}</b>.</div>
+          <div class="card-actions"><a class="recipe-link" href="${r.url || 'https://lancewood.co.za/recipes/'}" target="_blank" rel="noreferrer">View recipe hub →</a></div>
+        </div>`;
+      });
+
+      if (uniq.length) {
+        const listText = uniq.join(', ');
+        const cardId = 'plan-' + Date.now();
+        html += `<div class="recipe-card" data-cardid="${cardId}">
+          <div class="recipe-header"><div class="recipe-title">Shopping list starter</div><div class="recipe-time">🛒</div></div>
+          <div class="recipe-description">Based on the products used across your plan. Add pantry staples as needed.</div>
+          <div class="card-actions">
+            <button class="action-btn primary" onclick="addToShoppingList('${cardId}')">🛒 Add to shopping list</button>
+            <button class="action-btn" onclick="copyShopping('${cardId}')">📋 Copy items</button>
+          </div>
+          <div style="display:none" id="items-${cardId}">${listText}</div>
+        </div>`;
+      }
+
+      html += `<div class="echo" style="margin-top:14px">🧀 ${pick(signatureLines)}</div>`;
+      return html;
+    }
+
+    function buildGenerator(message, ctx) {
+      const ingredients = parseIngredients(message);
+      const query = ingredients.length ? ingredients.join(' ') : message;
+
+      const results = matchRecipes(query, ctx, 6);
+      const intro = emotionAwareIntro(message, ctx);
+
+      let html = `${intro}<b>Okay, here are Lancewood recipe matches:</b>`;
+      html += `<div class="echo">🧠 Taste memory echo: ${pick(tasteMemoryEchoes)}</div>`;
+      html += buildSubstitutionBlock(message);
+
+      if (!results.length) {
+        html += `<div class="echo">I could not find a direct match in the library. Try telling me what protein you have, or what appliance you can use.</div>`;
+      } else {
+        html += results.map((r, idx) => createRecipeCard(r, `gen-${Date.now()}-${idx}`)).join('');
+      }
+
+      if (ingredients.length) {
+        html += `<div class="echo">Ingredient check: I picked up <b>${ingredients.join(', ')}</b>. Want quick, healthy, or comfort?</div>`;
+      }
+
+      html += `<div class="echo" style="margin-top:14px">🧀 ${pick(signatureLines)}</div>`;
+      return html;
+    }
+
+    function buildMore(message, ctx) {
+      const intro = emotionAwareIntro(message, ctx);
+      // Find product match first
+      let productPick = null;
+      if (productFuse) {
+        const pr = productFuse.search(message);
+        if (pr.length) productPick = pr[0].item;
+      }
+
+      const recipesFound = matchRecipes(message + ' upgrade', ctx, 4);
+      let html = `${intro}<b>Let’s make it more, without making it complicated:</b>`;
+      html += `<div class="echo">🧠 Taste memory echo: ${pick(tasteMemoryEchoes)}</div>`;
+
+      if (productPick) {
+        const pImg = productPick.image ? `<img class="product-chip-thumb" src="${productPick.image}" alt="${productPick.name}" loading="lazy" />` : '';
+        html += `<div class="echo"><div class="product-echo">${pImg}<div><div style="font-weight:900;color:var(--navy);margin-bottom:2px">🧀 Product match</div><div><b>${productPick.name}</b>. ${(productPick.description || '').trim() ? productPick.description : 'This one is built for creamy upgrades, dips, and quick wins.'}</div></div></div></div>`;
+      }
+
+      if (recipesFound.length) {
+        html += recipesFound.map((r, idx) => createRecipeCard(r, `more-${Date.now()}-${idx}`)).join('');
+      } else {
+        html += `<div class="echo">Tell me what you are making and what you have, and I will suggest the simplest Lancewood upgrade.</div>`;
+      }
+
+      html += `<div class="echo" style="margin-top:14px">🧀 ${pick(signatureLines)}</div>`;
+      return html;
+    }
+
+    async function sendMessage(tab) {
+      if (!DB.loaded) {
+        toast('Loading', 'Still loading the recipe brain, try again in a second.');
+        return;
+      }
+
+      const input = document.getElementById(`${tab}-input`);
+      const btn = document.getElementById(`${tab}-send`);
+      const message = input.value.trim();
+      if (!message) return;
+
+      const containerId = `${tab}-messages`;
+      addMessage(message, true, containerId);
+      input.value = '';
+      input.disabled = true;
+      if (btn) btn.disabled = true;
+
+      showTyping(containerId);
+      await new Promise(resolve => setTimeout(resolve, 850));
+
+      const ctx = detectContext(message);
+
+      let response = '';
+      if (tab === 'planner') response = buildPlanner(message, ctx);
+      else if (tab === 'more') response = buildMore(message, ctx);
+      else response = buildGenerator(message, ctx);
+
+      hideTyping(containerId);
+      addMessage(response, false, containerId);
+
+      updateTasteMemories(Math.floor(Math.random() * 3) + 1);
+
+      input.disabled = false;
+      if (btn) btn.disabled = false;
+      input.focus();
+    }
+
+    function askQuestion(q) {
+      const input = document.getElementById(`${currentTab}-input`);
+      input.value = q;
+      sendMessage(currentTab);
+    }
+
+    function handleKeyPress(event, tab) {
+      if (event.key === 'Enter') sendMessage(tab);
+    }
+
+    // init
+    renderPrompts();
+    setMode('everyday');
+    loadDB();
+  </script>
 </body>
 </html>
