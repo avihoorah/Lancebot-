@@ -61,9 +61,10 @@
     }
     
     .logo-icon {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(34, 170, 226, 0.3);
     }
 
     .logo {
@@ -349,8 +350,9 @@
     }
 
     .avatar {
-      width: 48px;
-      height: 48px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -359,16 +361,17 @@
     }
 
     .message.bot .avatar {
-      background: transparent;
+      background: linear-gradient(135deg, var(--cyan), #1a8fc7);
       color: white;
+      box-shadow: 0 4px 12px rgba(34, 170, 226, 0.25);
       padding: 0;
-      overflow: visible;
+      overflow: hidden;
     }
     
     .message.bot .avatar img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
 
     .message.user .avatar {
@@ -376,7 +379,6 @@
       color: white;
       font-size: 11px;
       font-weight: 800;
-      border-radius: 50%;
     }
 
     .bubble {
