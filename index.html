@@ -67,8 +67,14 @@
       box-shadow: 0 4px 12px rgba(34, 170, 226, 0.3);
       object-fit: cover;
       object-position: center;
-      background: white;
-      padding: 2px;
+      overflow: hidden;
+    }
+    
+    .logo-icon img {
+      width: 150%;
+      height: 150%;
+      object-fit: cover;
+      object-position: center;
     }
 
     .logo {
@@ -365,17 +371,18 @@
     }
 
     .message.bot .avatar {
-      background: white;
+      background: linear-gradient(135deg, var(--cyan), #1a8fc7);
       color: white;
       box-shadow: 0 4px 12px rgba(34, 170, 226, 0.25);
-      padding: 2px;
+      padding: 0;
       overflow: hidden;
     }
     
     .message.bot .avatar img {
-      width: 100%;
-      height: 100%;
+      width: 150%;
+      height: 150%;
       object-fit: cover;
+      object-position: center;
     }
 
     .message.user .avatar {
