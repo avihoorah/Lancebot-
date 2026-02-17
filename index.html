@@ -796,8 +796,6 @@
       }
     }
 
-
-
     /* TOAST */
     .toast {
       position: fixed;
@@ -1130,21 +1128,29 @@
       ]
     };
 
-    // DEMO RESPONSES WITH STRUCTURED RECIPES
+    // ─────────────────────────────────────────────────────────────
+    // DEMO RESPONSES — one entry per quick-prompt text (all 12)
+    // plus generic fallbacks keyed by tab.
+    // ─────────────────────────────────────────────────────────────
     const demoResponses = {
+
+      // ── GENERATOR TAB ──────────────────────────────────────────
+
       "I have pasta and spinach, what can I make?": {
+        text: "Let me help you create something delicious with what you have.",
         recipe: {
           title: "Creamy Spinach & Garlic Pasta",
           time: "15 min",
           difficulty: "Easy",
-          servings: "2-3",
+          servings: "2–3",
           description: "Quick, comforting, and absolutely delicious. The cream cheese creates an incredible sauce that coats every strand."
         },
-        text: "Let me help you create something delicious with what you have.",
         products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g"],
         echo: "South Africans told me this tastes like <strong>Sunday lunch</strong> with zero stress."
       },
+
       "Load shedding dinner in 20 minutes": {
+        text: "Perfect for load shedding — everything in one pot on the gas stove.",
         recipe: {
           title: "One-Pot Cheesy Tuna Pasta",
           time: "18 min",
@@ -1152,11 +1158,12 @@
           servings: "4",
           description: "Load shedding? No problem. Fast, filling, zero oven required. Make extra and eat cold during the next blackout!"
         },
-        text: "Perfect for load shedding - everything in one pot on the gas stove.",
         products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Cheddar 900g"],
         echo: "People said this is <strong>survival mode</strong>, but make it delicious."
       },
+
       "Month-end meals, but still tasty": {
+        text: "Month-end doesn't mean sad meals. This costs ±R5 per person but delivers R500 energy.",
         recipe: {
           title: "Budget Braai Broodjie Upgrade",
           time: "12 min",
@@ -1164,21 +1171,171 @@
           servings: "4",
           description: "R20 feeds 4 people. The cream cheese spreads further than butter and adds golden crispness. Secret weapon: apricot jam!"
         },
-        text: "Month-end doesn't mean sad meals. This costs ±R5 per person but delivers R500 energy.",
         products: ["Lactose Free Medium Fat Plain Cream Cheese 230g", "Grated Cheddar 200g"],
         echo: "I learned <strong>month-end survival</strong> can taste like soft life with the right cheese."
       },
+
       "Impress the in-laws with something cheesy": {
+        text: "Time to bring out the big guns. This is restaurant-level with minimal effort.",
         recipe: {
           title: "Baked Camembert with Balsamic Onion",
           time: "25 min",
           difficulty: "Easy",
-          servings: "6-8",
+          servings: "6–8",
           description: "Looks like you spent hours, takes 25 minutes. Serve in the wooden box on a board with fresh thyme. They'll think you're a culinary genius."
         },
-        text: "Time to bring out the big guns. This is restaurant-level with minimal effort.",
         products: ["Balsamic & Onion Dip & Top", "Full Fat Plain Cream Cheese 230g"],
         echo: "<strong>Impressing people</strong> is just good cheese plus confidence."
+      },
+
+      // ── PLANNER TAB ────────────────────────────────────────────
+
+      "Plan 5 dinners for a family, no repeats": {
+        text: "Here's a no-repeat family dinner plan that keeps things simple and delicious every night.",
+        recipe: {
+          title: "5-Night Family Dinner Plan",
+          time: "Varies",
+          difficulty: "Easy–Medium",
+          servings: "4",
+          description: "Mon: Cheesy pasta bake · Tue: Cottage pie with cream cheese mash · Wed: Quick chicken wraps · Thu: Tomato & gouda soup · Fri: Braai broodjies. All Lancewood-powered, all crowd-approved."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Full Cream Chunky Cottage Cheese", "Gouda 600g"],
+        echo: "Families told me the <strong>best week</strong> is one where nobody asks 'what's for dinner?' twice."
+      },
+
+      "Quick weeknight meals, 30 minutes max": {
+        text: "Busy week? These five meals are done before the kids finish homework.",
+        recipe: {
+          title: "30-Minute Weeknight Rotation",
+          time: "≤30 min each",
+          difficulty: "Easy",
+          servings: "4",
+          description: "Creamy tomato pasta · Grilled cheese quesadillas · Yoghurt-marinated chicken · Mushroom sauce noodles · Quick cottage cheese frittata. All under 30 minutes, all worth it."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Mushroom Sauce Delight", "Greek Delight Double Cream Plain Yoghurt", "Full Cream Chunky Cottage Cheese"],
+        echo: "Speed is a <strong>love language</strong> when there are hungry people waiting."
+      },
+
+      "Braai Friday, keep the rest easy": {
+        text: "Braai Friday sorted — and the rest of the week runs on autopilot.",
+        recipe: {
+          title: "Braai Friday + 4-Day Easy Plan",
+          time: "Fri: 45 min / Rest: ≤25 min",
+          difficulty: "Easy",
+          servings: "4–6",
+          description: "Friday: Loaded braai with cheesy broodjies & cream cheese dips. Mon–Thu: One-pot meals using braai leftovers — wraps, pasta, toasted sarmies, and a quick soup."
+        },
+        products: ["Balsamic & Onion Dip & Top", "Full Fat Plain Cream Cheese 230g", "Gouda 600g", "Grated Cheddar 200g"],
+        echo: "A good <strong>braai on Friday</strong> is basically meal prep for the whole week."
+      },
+
+      "High protein meals for the week": {
+        text: "Protein doesn't have to be boring. Here's a full week that keeps you full and satisfied.",
+        recipe: {
+          title: "High-Protein Weekly Plan",
+          time: "20–35 min each",
+          difficulty: "Easy–Medium",
+          servings: "2–4",
+          description: "Cottage cheese breakfast bowls · Greek yoghurt chicken marinade · Cheesy egg muffins · Tuna & cream cheese wraps · Protein-packed pasta bake. Each meal is 30g+ protein per serving."
+        },
+        products: ["Full Cream Chunky Cottage Cheese", "Greek Delight Double Cream Plain Yoghurt", "Full Fat Plain Cream Cheese 230g", "Lactose Free Double Cream Plain Yoghurt"],
+        echo: "South African fitness goals taste better when <strong>cheese is involved</strong>."
+      },
+
+      // ── UPGRADE TAB ────────────────────────────────────────────
+
+      "Make my toasted sandwich elite": {
+        text: "Your toastie is about to go from zero to hero in three simple moves.",
+        recipe: {
+          title: "The Elite Toasted Sarmie",
+          time: "8 min",
+          difficulty: "Very Easy",
+          servings: "1–2",
+          description: "Spread cream cheese on the inside of both slices before toasting — it creates a golden, crispy, tangy crust that butter can't match. Add gouda, caramelised onion, and a pinch of smoked paprika. Life-changing."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Gouda 600g", "Balsamic & Onion Dip & Top"],
+        echo: "People said the cream cheese trick is <strong>the only thing</strong> they'll tell their friends about."
+      },
+
+      "Upgrade pasta salad with Lancewood": {
+        text: "Pasta salad is a blank canvas — let's make it unforgettable.",
+        recipe: {
+          title: "Upgraded Lancewood Pasta Salad",
+          time: "20 min",
+          difficulty: "Easy",
+          servings: "4–6",
+          description: "Stir cream cheese through warm pasta for a creamy coating, then toss with cherry tomatoes, cucumber, olives, grated cheddar, and fresh basil. Finish with a lemon-yoghurt dressing. Travels well. Tastes better the next day."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Greek Delight Double Cream Plain Yoghurt"],
+        echo: "The upgrade from <strong>sad side dish</strong> to star of the table is just cream cheese."
+      },
+
+      "Make my braai broodjie more cheesy": {
+        text: "A braai broodjie is only as good as its cheese game. Let's max it out.",
+        recipe: {
+          title: "Maximum Cheese Braai Broodjie",
+          time: "10 min",
+          difficulty: "Very Easy",
+          servings: "4",
+          description: "Layer cream cheese + grated cheddar + sliced gouda inside your broodjie. The triple-cheese melt is next level. Add a smear of balsamic onion dip for sweet-savoury balance. Press firm on the grid and don't rush it."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Gouda 600g", "Balsamic & Onion Dip & Top"],
+        echo: "Triple cheese on the braai is not <strong>extra</strong>. It's <strong>necessary</strong>."
+      },
+
+      "Make my 2 minute noodles feel fancy": {
+        text: "Two-minute noodles are the base. Lancewood is the glow-up.",
+        recipe: {
+          title: "Fancy-Feeling 2-Minute Noodles",
+          time: "5 min",
+          difficulty: "Very Easy",
+          servings: "1",
+          description: "Cook your noodles, drain most of the water, stir in a tablespoon of cream cheese until silky. Add the seasoning sachet, a handful of grated cheddar, and top with a soft-boiled egg and spring onion. Feels like ramen. Costs R8."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g"],
+        echo: "Soft life doesn't require a <strong>big budget</strong> — just the right cheese."
+      }
+    };
+
+    // ─────────────────────────────────────────────────────────────
+    // GENERIC FALLBACKS per tab (used for free-typed messages)
+    // ─────────────────────────────────────────────────────────────
+    const genericFallbacks = {
+      generator: {
+        text: "Great question! I'm looking through Lancewood's recipe library and our 47,382 taste memories. In the full version I'll give you a personalised recipe based on exactly what you have and your mood.",
+        recipe: {
+          title: "Cheesy Crowd-Pleaser",
+          time: "20 min",
+          difficulty: "Easy",
+          servings: "4",
+          description: "A flexible recipe built around whatever you have. Cream cheese as the sauce base, cheddar on top, and it works with almost any protein or veg you can find."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g"],
+        echo: "Taste is about <strong>memory, not metrics</strong>."
+      },
+      planner: {
+        text: "I'm building your plan! In the full version I'll factor in your household size, budget, and days. Here's a starting point you can adapt.",
+        recipe: {
+          title: "Flexible 5-Day Plan",
+          time: "Varies",
+          difficulty: "Easy",
+          servings: "4",
+          description: "A balanced week: two pasta dishes, one soup, one braai night, one egg-based meal. All built around Lancewood staples you likely already have."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Full Cream Chunky Cottage Cheese"],
+        echo: "The best meal plan is one you'll actually <strong>stick to</strong>."
+      },
+      upgrade: {
+        text: "Every meal can be Made for More. In the full version I'll give you a step-by-step upgrade for whatever you're cooking. Here's the general approach:",
+        recipe: {
+          title: "The Lancewood Upgrade Formula",
+          time: "5 min extra",
+          difficulty: "Very Easy",
+          servings: "Any",
+          description: "Step 1: Add cream cheese as a sauce or spread. Step 2: Finish with grated cheddar. Step 3: Add a flavoured dip or yoghurt-based dressing. That's it. Works on almost anything."
+        },
+        products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g", "Balsamic & Onion Dip & Top"],
+        echo: "The upgrade is always <strong>simpler than you think</strong>."
       }
     };
 
@@ -1195,18 +1352,13 @@
     // KEYBOARD SHORTCUTS
     function setupKeyboardShortcuts() {
       document.addEventListener('keydown', (e) => {
-        // Cmd/Ctrl + K to focus input
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
           e.preventDefault();
           document.getElementById('chatInput').focus();
         }
-        
-        // Escape to collapse prompts
         if (e.key === 'Escape') {
           const section = document.getElementById('promptsSection');
-          if (!section.classList.contains('collapsed')) {
-            togglePrompts();
-          }
+          if (!section.classList.contains('collapsed')) togglePrompts();
         }
       });
     }
@@ -1215,7 +1367,6 @@
     function loadPrompts(tab) {
       const grid = document.getElementById('promptsGrid');
       grid.innerHTML = '';
-      
       promptsByTab[tab].forEach(prompt => {
         const card = document.createElement('div');
         card.className = 'prompt-card';
@@ -1232,30 +1383,27 @@
       isPromptsExpanded = !isPromptsExpanded;
     }
 
-    // SWITCH TAB WITH SMOOTH TRANSITION
+    // SWITCH TAB
     function switchTab(tab, button) {
       if (currentTab === tab) return;
-      
+
       const container = document.getElementById('chatContainer');
       container.classList.add('transitioning');
-      
+
       setTimeout(() => {
-        // Update active tab
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         button.classList.add('active');
-        
+
         currentTab = tab;
-        document.getElementById('contextMode').textContent = 
+        document.getElementById('contextMode').textContent =
           tab === 'generator' ? 'Everyday mode' :
-          tab === 'planner' ? 'Planning mode' :
+          tab === 'planner'   ? 'Planning mode' :
           'Upgrade mode';
-        
+
         loadPrompts(tab);
-        
-        // Clear messages and show welcome
         document.getElementById('messages').innerHTML = '';
         showWelcomeMessage();
-        
+
         container.classList.remove('transitioning');
       }, 150);
     }
@@ -1264,10 +1412,9 @@
     function showWelcomeMessage() {
       const messages = {
         generator: "Hey! I'm Lancebot. Tell me what you have, what you're craving, or what the day looks like. I'll pull from Lancewood's recipes and keep it realistic.",
-        planner: "Let's plan your week. Give me days, budget, and vibes. I'll build a plan using Lancewood recipes, no repeats.",
-        upgrade: "Everything can be Made for More. Tell me what you're cooking and I'll suggest the simplest Lancewood upgrade."
+        planner:   "Let's plan your week. Give me days, budget, and vibes. I'll build a plan using Lancewood recipes, no repeats.",
+        upgrade:   "Everything can be Made for More. Tell me what you're cooking and I'll suggest the simplest Lancewood upgrade."
       };
-      
       addBotMessage(messages[currentTab], null, [], "I'm not here to be perfect. I'm here to be <strong>useful</strong>.");
     }
 
@@ -1276,7 +1423,6 @@
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
-      
       sendPrompt(text);
       input.value = '';
     }
@@ -1284,40 +1430,31 @@
     function sendPrompt(text) {
       const messagesContainer = document.getElementById('messages');
       const sendBtn = document.getElementById('sendBtn');
-      
-      // Add user message
+
       addUserMessage(text);
-      
-      // Auto-collapse prompts after first message
+
+      // Auto-collapse prompts after first interaction
       if (isPromptsExpanded && messagesContainer.children.length > 2) {
         document.getElementById('promptsSection').classList.add('collapsed');
         isPromptsExpanded = false;
       }
-      
-      // Disable send button and show loading
+
       sendBtn.disabled = true;
       sendBtn.classList.add('loading');
       sendBtn.textContent = 'Thinking...';
-      
-      // Show typing
+
       const typingId = showTyping();
-      
-      // Simulate response
+
       setTimeout(() => {
         hideTyping(typingId);
-        
-        // Re-enable send button
         sendBtn.disabled = false;
         sendBtn.classList.remove('loading');
         sendBtn.textContent = 'Send';
-        
-        const response = demoResponses[text] || {
-          text: "Great question! I'm looking through Lancewood's recipes and our 47,382 taste memories. In the full version, I'll give you personalised recipes based on what you have and your mood.",
-          recipe: null,
-          products: ["Full Fat Plain Cream Cheese 230g", "Grated Cheddar 200g"],
-          echo: "Taste is about <strong>memory, not metrics</strong>."
-        };
-        
+
+        // Look up the response by exact prompt text first,
+        // then fall back to the current tab's generic response.
+        const response = demoResponses[text] || genericFallbacks[currentTab];
+
         addBotMessage(response.text, response.recipe, response.products, response.echo);
       }, 1500);
     }
@@ -1339,9 +1476,9 @@
       const container = document.getElementById('messages');
       const msg = document.createElement('div');
       msg.className = 'message bot';
-      
+
       const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-      
+
       let html = `
         <div class="avatar">
           <img src="assets/images/lancebot_icon.png" alt="Lancebot" />
@@ -1352,19 +1489,11 @@
           </button>
           ${formattedText}
       `;
-      
-      if (recipe) {
-        html += createRecipeCard(recipe);
-      }
-      
-      if (productNames.length > 0) {
-        html += createProductsHTML(productNames);
-      }
-      
-      if (echo) {
-        html += `<div class="echo">${echo}</div>`;
-      }
-      
+
+      if (recipe) html += createRecipeCard(recipe);
+      if (productNames.length > 0) html += createProductsHTML(productNames);
+      if (echo) html += `<div class="echo">${echo}</div>`;
+
       html += '</div>';
       msg.innerHTML = html;
       container.appendChild(msg);
@@ -1407,13 +1536,12 @@
           </div>
           <div class="products-grid">
       `;
-      
       productNames.forEach(name => {
         const product = products.find(p => p.name === name);
         if (product) {
           html += `
             <div class="product-card" onclick="event.stopPropagation()">
-              <img src="${product.image}" alt="${product.name}" class="product-image" 
+              <img src="${product.image}" alt="${product.name}" class="product-image"
                 onerror="this.src='${lancewoodLogoSVG}'">
               <div class="product-name">${product.name}</div>
               <button class="product-btn" onclick="addToList('${product.name}')">+ Add</button>
@@ -1421,7 +1549,6 @@
           `;
         }
       });
-      
       html += '</div></div>';
       return html;
     }
@@ -1450,14 +1577,13 @@
     }
 
     function hideTyping(id) {
-      const typing = document.getElementById(id);
-      if (typing) typing.remove();
+      const el = document.getElementById(id);
+      if (el) el.remove();
     }
 
     // TOGGLE PRODUCTS
     function toggleProducts(event) {
-      const section = event.currentTarget;
-      section.classList.toggle('expanded');
+      event.currentTarget.classList.toggle('expanded');
     }
 
     // SHARE MESSAGE
@@ -1465,12 +1591,8 @@
       event.stopPropagation();
       const bubble = event.target.closest('.bubble');
       const text = bubble.innerText;
-      
       if (navigator.share) {
-        navigator.share({
-          title: 'Lancebot Recipe',
-          text: text
-        });
+        navigator.share({ title: 'Lancebot Recipe', text });
       } else if (navigator.clipboard) {
         navigator.clipboard.writeText(text);
         showToast('✅', 'Copied to clipboard!');
@@ -1479,23 +1601,18 @@
       }
     }
 
-    // VIEW FULL RECIPE
     function viewFullRecipe(title) {
       showToast('📖', `Opening full recipe for ${title}...`);
-      // In production, this would open the full recipe page
     }
 
-    // SAVE RECIPE
     function saveRecipe(title) {
       showToast('💾', `Saved "${title}" to your collection!`);
     }
 
-    // ADD TO LIST
     function addToList(productName) {
       showToast('✅', `${productName} added to shopping list!`);
     }
 
-    // TOAST
     function showToast(icon, text) {
       const toast = document.getElementById('toast');
       document.getElementById('toastIcon').textContent = icon;
@@ -1504,12 +1621,9 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // UTILITIES
     function scrollToBottom() {
       const container = document.getElementById('messages');
-      setTimeout(() => {
-        container.scrollTop = container.scrollHeight;
-      }, 100);
+      setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
     }
 
     function handleEnter(event) {
