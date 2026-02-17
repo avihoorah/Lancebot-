@@ -1401,6 +1401,12 @@
           'Upgrade mode';
 
         loadPrompts(tab);
+
+        // Always reset prompts panel to expanded state on tab switch
+        const promptsSection = document.getElementById('promptsSection');
+        promptsSection.classList.remove('collapsed');
+        isPromptsExpanded = true;
+
         document.getElementById('messages').innerHTML = '';
         showWelcomeMessage();
 
@@ -1433,8 +1439,8 @@
 
       addUserMessage(text);
 
-      // Auto-collapse prompts after first interaction
-      if (isPromptsExpanded && messagesContainer.children.length > 2) {
+      // Auto-collapse prompts after first interaction (welcome msg = 1 child already)
+      if (isPromptsExpanded && messagesContainer.children.length >= 2) {
         document.getElementById('promptsSection').classList.add('collapsed');
         isPromptsExpanded = false;
       }
